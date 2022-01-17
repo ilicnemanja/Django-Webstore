@@ -1,0 +1,50 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}{{user.first_name}} {{user.last_name}} | Profil{% endblock title %}
+
+{% block content %}
+<h3>Proizvodi od {{user.first_name}} {{user.last_name}}</h3> 
+<div class="row">
+    {% for prod in product_by_user %}
+    <div class="col-md-4">
+        <div class="card mb-2 bg-dark">
+            <a href="{{ prod.get_absolute_url }}">
+                <img width="100%" src="{% if prod.image %}{{prod.image.url}}{% else %}{% static 'webshop/images/products/nophoto.jpg' %}{% endif %}" />
+            </a>
+            <h5 class="text-center"><a href="{{prod.get_absolute_url}}" class="text-danger">{{prod.name}}</a></h5><br>
+            <h5 class="text-white text-center">{{prod.price}} din</h5>
+            <div class="card-body">
+                <p class="card-title text-danger text-center">Proizvod od <a class="card-title text-danger" href="{% url 'webshop:view_profile' prod.user.id %}">{{prod.user.first_name}} {{prod.user.last_name}}</a></p>
+                {% if prod.user.id == request.session.user.id %}
+                <p class="text-center">
+                    <a href="{% url 'webshop:product_update' prod.id prod.slug %}" class="btn btn-outline-danger">Ažuriraj proizvod</i></a>
+                </p>
+                <p class="text-center">
+                    <a onclick="delete_product_confirmation(event)" href="{% url 'webshop:product_delete' prod.id %}" class="btn btn-outline-danger">Obriši proizvod</i></a>
+                </p>
+                {% else %}
+                <p class="text-center">
+                    <a href="#" class="btn btn-outline-danger">Dodaj u korpu</i></a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<br>
+{% if request.session.user.id == user.id %}
+    <h3>Profil od {{user.first_name}} {{user.last_name}}</h3>
+    <button class="btn btn-mute justify-content-right" data-toggle="collapse" data-target="#frst">
+        <h5>Podešavanja</h5>
+    </button>
+    <div id="frst" class="collapse">
+        <h5>
+            <a href="{% url 'webshop:edit_profile' user.id %}">Ažuriraj nalog</a>
+            <a style="padding-left: 15px;" onclick="delete_user_confirmation(event)" href="{% url 'webshop:delete_profile' user.id %}">Obriši nalog</a>
+        </h5>
+    </div>
+{% endif %}
+
+{% endblock content %}

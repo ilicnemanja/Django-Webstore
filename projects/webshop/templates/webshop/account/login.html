@@ -1,0 +1,27 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}KupujemProdajem | Logovanje{% endblock title %}
+
+{% block content %}
+<h1>Ulogujte se</h1>
+    <p>Koristite formu ispod da bi ste se ulogovali:</p>
+    <form action="{% url 'webshop:login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="login_username">Korisničko ime:</label>
+            <input type="text" class="form-control" id="login_username" placeholder="Ukucajte korisničko ime" name="login_username" required>
+            <div class="valid-feedback">Valid username.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="login_password">Lozinka:</label>
+            <input type="password" class="form-control" id="login_password" placeholder="Ukucajte šifru" name="login_password" required>
+            <div class="valid-feedback">Valid password.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <button type="submit" class="btn btn-danger">Ulogujte se</button>
+        <br>
+        <p>Ako nemate kreiran nalog molimo Vas <a id="links" href="{% url 'webshop:register' %}">napravite nalog</a>.</p>
+    </form>   
+{% endblock content %}

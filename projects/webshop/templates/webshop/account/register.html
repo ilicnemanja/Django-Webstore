@@ -1,0 +1,59 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}KupujemProdajem | Kreiranje naloga{% endblock title %}
+
+{% block content %}
+    <h1>Kreirajte naloga</h1>
+    <p>Koristite formu ispod da bi ste kreirali nalog:</p>
+    <form action="{% url 'webshop:register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="first_name">Ime:</label>
+            <input type="text" class="form-control" id="first_name" placeholder="Ukucajte ime" name="first_name" required>
+            <div class="valid-feedback">Valid first name.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Prezime:</label>
+            <input type="text" class="form-control" id="last_name" placeholder="Ukucajte prezime" name="last_name" required>
+            <div class="valid-feedback">Valid last name.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="username">Korisničko ime:</label>
+            <input type="text" class="form-control" id="username" placeholder="Ukucajte korisničko ime" name="username" required>
+            <div class="valid-feedback">Valid username.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="email">E-pošta:</label>
+            <input type="email" class="form-control" id="email" placeholder="Ukucajte e-poštu" name="email" required>
+            <div class="valid-feedback">Valid email.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="password">Lozinka:</label>
+            <input type="password" class="form-control" id="password" placeholder="Ukucajte šifru" name="password" required>
+            <div class="valid-feedback">Valid password.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="password2">Potvrdite lozinku:</label>
+            <input type="password" class="form-control" id="password2" placeholder="Ukucajte šifru ponovo" name="password2" required>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="remember" required> Slažem se da hoću da kreiram svoj nalog na ovom sajtu.
+            <div class="valid-feedback">Valid checkbox.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-danger">Kreiraj nalog</button>
+        <br>
+        <p>Ako već imate nalog onda se <a id="links" href="{% url 'webshop:login' %}">ulogujte ovde</a>.</p>
+    </form>
+
+{% endblock content %}

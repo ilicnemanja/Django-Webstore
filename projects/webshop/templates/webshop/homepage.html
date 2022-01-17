@@ -1,0 +1,79 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}KupujemProdajem&reg;{% endblock title %}
+
+{% block pre-content %}
+{% if not request.session.user %}
+<h3 class="text-center">Dobrodošli na sajt 
+    <strong>
+        <span style="color: #ed280e;">Ku</span><span style="color: #e6c809;">pu</span><span style="color: #34c90a;">je</span><span style="color: #0e67ed;">m</span><span style="color: darkblue;">Prodajem</span>
+    </strong>
+</h3>
+<p class="text-center">Uvek tu za vas.</p>
+
+<div class="container">
+    <div id="demo" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+            <li data-target="#demo" data-slide-to="3"></li>
+            <li data-target="#demo" data-slide-to="4"></li>
+            <li data-target="#demo" data-slide-to="5"></li>
+        </ul>
+
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+            <img width="1000" height="600" src="{% static 'webshop/images/background/img1.jpeg' %}" alt="img1">
+            </div>
+            <div class="carousel-item">
+            <img width="1000" height="600" src="{% static 'webshop/images/background/img2.jpeg' %}" alt="img2">
+            </div>
+            <div class="carousel-item">
+            <img width="1000" height="600" src="{% static 'webshop/images/background/img3.jpeg' %}" alt="img3">
+            </div>
+            <div class="carousel-item">
+            <img width="1000" height="600" src="{% static 'webshop/images/background/img4.jpeg' %}" alt="img3">
+            </div>
+            <div class="carousel-item">
+            <img width="1000" height="600" src="{% static 'webshop/images/background/img5.jpeg' %}" alt="img3">
+            </div>
+            <div class="carousel-item">
+            <img width="1000" height="600" src="{% static 'webshop/images/background/img6.jpeg' %}" alt="img3">
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock pre-content %}
+
+{% block content %}
+{% if request.session.user %}
+    <h1>Dobrodošli {{request.session.user.first_name}} {{request.session.user.last_name}}</h1>
+    <br>
+{% else %}
+    <h5>
+        KupujemProdajem je mesto gde možete da kupite šta god poželite. Možete kreirati nalog i prodati neki proizvod ili kupiti isti.
+    </h5>
+    <br>
+    <h5>Ako samo želite da kupite nešto onda Vam ne treba nalog, možete to uraditi <a id="links" href="{% url 'webshop:product_all'  %}">ovde</a>.</h5>
+    <br>
+    <h5>Nemate nalog?</h5>
+    <p>Kreirajte nalog <a id="links" href="{% url 'webshop:register' %}">ovde</a>.</p>
+    <br>
+    <h5>Ako imate bilo kakvih problema kontaktirajte našu podršku:</h5>
+    <p><a id="links" href="{% url 'webshop:contact' %}">Kontakt</a></p>
+{% endif %}
+{% endblock content %}

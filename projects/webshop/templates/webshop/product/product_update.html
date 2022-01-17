@@ -1,0 +1,47 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}{{product.name}} | Ažuriranje{% endblock title %}
+
+{% block content %}
+<h1>Ažuriranje proizvoda</h1>
+<p>Koristi formu ispod da bi ste ažurirali proizvod:</p>
+  <form action="{% url 'webshop:product_update' product.id product.slug %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="container">
+            <div class="form-group">
+                <label for="e_category">Kategorija:</label><br>
+                <select name="e_category" id="e_category" required>
+                    <option selected value="{{ product.category.name }}">{{ product.category.name }}</option>
+                        {% for category in categories %}
+                            <option value="{{ category.name }}">
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                </select>
+                <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+            </div>
+            <div class="form-group">
+                <br>
+                <label for="e_name">Naziv:</label>
+                <input type="text" class="form-control" id="e_name" name="e_name" required value="{{product.name}}">
+                <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+            </div>
+            <div class="form-group">
+                <label for="e_img">Slika:</label><br>
+                <input type="hidden" name="old_img" id="old_img" value="{{product.image}}">
+                <input type="file" id="e_img" name="e_img">
+            </div>
+            <div class="form-group">
+                <label for="e_description">Opis (opciono):</label>
+                <textarea type="description" class="form-control" id="e_description" name="e_description">{{product.description}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="e_price">Cena:</label><br>
+                <input type="number" min="10" id="e_price" name="e_price" required value={{product.price}}>
+                <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+            </div>
+            <button type="submit" class="btn btn-danger">Ažuriraj proizvod</button>
+        </div>
+    </form>
+{% endblock content %}

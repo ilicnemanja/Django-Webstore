@@ -1,0 +1,166 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'webshop/css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'webshop/images/background/favicon.ico' %}" type="image/x-icon">
+
+</head>
+<body>
+
+    <nav class="navbar sticky-top navbar-expand-sm bg-white navbar-white">
+
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'webshop:home' %}"><img src="{% static 'webshop/images/background/logo.jpg' %}" /></a>
+
+        <!-- Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon">
+                <i class="fas fa-bars" style="color: black; font-size:28px;"></i>
+            </span>
+        </button>
+
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'webshop:home' %}"><i class="fas fa-home"></i> Početna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'webshop:contact' %}"><i class="fas fa-address-book"></i> Kontakt</a>
+                </li>
+
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fab fa-product-hunt"></i>
+                        Proizvodi
+                    </a>
+                    <div class="dropdown-menu">
+                        {% if request.session.user %}
+                        <a class="dropdown-item text-secondary" href="{% url 'webshop:product_all'  %}">Svi Proizvodi</a>
+                        <a class="dropdown-item text-secondary" href="{% url 'webshop:product_add' %}">Dodaj Proizvod</a>
+                        <a class="dropdown-item text-secondary" href="{% url 'webshop:product_by_user' request.session.user.id %}">Vaši Proizvodi</a>
+                        {% else %}
+                        <a class="dropdown-item text-secondary" href="{% url 'webshop:product_all'  %}">Svi Proizvodi</a>
+                        {% endif %}
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-store"></i>
+                        Kategorije
+                    </a>
+                    <div class="dropdown-menu scrollable-menu" role="menu">
+                    {% for cat in categories %}
+                        <a class="dropdown-item text-secondary" href="{{cat.get_absolute_url}}">{{ cat.name }}</a>
+                    {% endfor %}
+                    </div>
+                </li>
+            </ul>
+
+
+
+            <div class="navbar-nav navbar-collapse justify-content-end">
+                
+                {% if request.session.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'webshop:view_profile' request.session.user.id %}"><i class="fas fa-user-circle"></i>  Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a onclick="logout_confirmation(event)" class="nav-link" href="{% url 'webshop:logout' %}"><i class="fas fa-sign-in-alt"></i>  Izađi</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'webshop:register' %}"><i class="fas fa-user-plus"></i>  Kreiraj nalog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'webshop:login' %}"><i class="fas fa-user"></i>  Uloguj se</a>
+                </li>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div id="subheader">
+        <div class="cart">
+            <a href="{% url 'webshop:cart_detail' %}"><i class="fas fa-shopping-basket fa-2x"></i></a>
+        </div>
+    </div>
+
+    <div class="container border border-light rounded-bottom">
+
+        {% if error %}
+        <div class="alert alert-dark alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong class="text-danger">{{ error }}</strong>
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div class="alert alert-dark alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong class="text-success">{{ success }}</strong>
+        </div>
+        {% endif %}
+
+
+        <!-- OVDE IDE PROIZVOD -->
+        {% if category %}
+        <h3>{{category.name}}</h3><br>
+        <div class="row">
+            {% for prod in products %}
+            <div class="col-md-4">
+                <div class="card mb-2 bg-dark" style="width: auto; height: auto;">
+                    <a href="{{ prod.get_absolute_url }}">
+                        <img class="card-img-top" src="{% if prod.image %}{{prod.image.url}}{% else %}{% static 'webshop/images/products/nophoto.jpg' %}{% endif %}" />
+                    </a>
+                    <div class="card-body">
+                        <h5 class="text-center"><a href="{{prod.get_absolute_url}}" class="text-danger">{{prod.name}}</a></h5><br>
+                        <h5 class="text-white text-center">{{prod.price}} din</h5>
+                    
+                        <p class="card-title text-danger text-center">Proizvod od <a class="card-title text-danger" href="{% url 'webshop:view_profile' prod.user.id %}">{{prod.user.first_name}} {{prod.user.last_name}}</a></p>
+                        <p class="text-center">
+                            <a href="{% url 'webshop:cart_add' product_id=prod.id %}" class="btn btn-outline-danger">Dodaj u korpu</i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+
+            {% block pre-content %}{% endblock pre-content %}
+            {% block content %}{% endblock content %}
+        {% endif %}
+
+        
+        <footer>
+        <br>
+        <h4 class="text-primary">
+        <strong>
+            <span style="color: #ed280e;">Ku</span><span style="color: #e6c809;">pu</span><span style="color: #34c90a;">je</span><span style="color: #0e67ed;">m</span><span style="color: darkblue;">Prodajem</span>
+        </strong>&reg;</h4>
+        <p>Uvek tu za vas.</p> 
+        <p>&copy; 2021 KupujemProdajem. Sav materijal je korišćen u edukativne svrhe.</p>
+        <a id="instagram" href="https://www.instagram.com/ilicnemanjaaa/" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+        <a id="whatsapp" href="https://wa.me/0604244986" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>
+        <a id="github" href="https://github.com/nemanjailic7" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+        <a id="linkedin" href="https://www.linkedin.com/in/nemanja-ili%C4%87-b018a61ba/" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
+        <br>
+    </footer>
+
+    </div>
+
+
+    <script src="{% static 'webshop/js/index.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

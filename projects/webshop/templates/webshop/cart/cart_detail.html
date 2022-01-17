@@ -1,0 +1,42 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}KupujemProdajem | Korpa{% endblock title %}
+
+{% block content %}
+
+<table class="table table-dark table-hover">
+    <thead>
+      <tr>
+        <th>Ime Proizvoda:</th>
+        <th>Prodavac:</th>
+        <th>Ukloni Proizvod:</th>
+        <th>Cena Proizvoda:</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.user.first_name}} {{product.user.last_name}}</td>
+                    <td>
+                        <a href="{% url 'webshop:cart_remove' product_id=product.id %}" class="btn btn-outline-danger">Ukloni</i></a>
+                    </td>
+                    <td>{{item.price}} din</td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="bg-success">
+            <td colspan="2"></td>
+            <td>Ukupna cena:</td>
+            <td>{{cart.get_total_price}} din</td>
+        </tr>
+    </tbody>
+  </table>
+<p class="text-center">
+    <a href="{% url 'webshop:product_all'  %}">Dodajte Proizvod</a> |
+    <a href="#" class="text-center">Nastavite kupovinu</a>
+</p>
+
+{% endblock content %}

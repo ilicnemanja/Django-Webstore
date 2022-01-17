@@ -1,0 +1,31 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}KupujemProdajem | Podrška{% endblock title %}
+
+{% block content %}
+<h1>Podrška</h1>
+    <p>Koristite formu ispod da bi ste nas kontaktirali putem e-pošte:</p>
+    <form action="{% url 'webshop:contact' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="ct_email">E-pošta:</label>
+            <input type="email" class="form-control" id="ct_email" placeholder="Ukucajte e-poštu" name="ct_email" required>
+            <div class="valid-feedback">Valid email.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="subject">Naslov poruke</label>
+            <input type="text" class="form-control" id="subject" placeholder="Ukucajte naslov" name="subject" required>
+            <div class="valid-feedback">Valid subject.</div>
+            <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+        </div>
+        <div class="form-group">
+            <label for="textarea">Poruka</label>
+            <textarea class="form-control" id="textarea" name="textarea" rows="3" placeholder="Ukucajte poruku" required></textarea>
+            <div class="valid-feedback">Valid textarea.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <button type="submit" class="btn btn-danger">Pošaljite</button>
+    </form> 
+{% endblock content %}

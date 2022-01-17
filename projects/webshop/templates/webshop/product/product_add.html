@@ -1,0 +1,48 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}{{request.session.user.first_name}} {{request.session.user.last_name}} | Dodaj proizvod{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <h2>Dodaj proizvod</h2>
+  <p>Koristi formu ispod da bi dodao proizvod:</p>
+  <form action="{% url 'webshop:product_add' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="container">
+            <div class="form-group">
+                <label for="category">Kategorija:</label><br>
+                <select name="category" id="category" required>
+                    <option selected disabled value="">-- IZABERI --</option>
+                        {% for category in categories %}
+                            <option value="{{ category.name }}">
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                </select>
+                <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+            </div>
+            <div class="form-group">
+                <br>
+                <label for="p_name">Naziv:</label>
+                <input type="text" class="form-control" id="p_name" name="p_name" required>
+                <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+            </div>
+            <div class="form-group">
+                <label for="img">Slika:</label><br>
+                <input type="file" id="img" name="img">
+            </div>
+            <div class="form-group">
+                <label for="description">Opis (opciono):</label>
+                <textarea type="description" class="form-control" id="description" name="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Cena:</label><br>
+                <input type="number" min="10" id="price" name="price" required>
+                <div class="invalid-feedback">Molimo Vas popunite ovo polje.</div>
+            </div>
+            <button type="submit" class="btn btn-danger">Dodaj</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

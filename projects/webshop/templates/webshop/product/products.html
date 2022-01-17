@@ -1,0 +1,29 @@
+{% extends 'webshop/_layout.html' %}
+{% load static %}
+
+{% block title %}Svi proizvodi{% endblock title %}
+
+{% block content %}
+<h3>{% if category %}{{category.name}}{% else %}Svi Proizvodi{% endif %}</h3><br>
+<div class="row">
+    {% for prod in products %}
+    <div class="col-md-4">
+        <div class="card mb-2 bg-dark" style="width: auto; height: auto;">
+            <a href="{{ prod.get_absolute_url }}">
+                <img class="card-img-top" src="{% if prod.image %}{{prod.image.url}}{% else %}{% static 'webshop/images/products/nophoto.jpg' %}{% endif %}" />
+            </a>
+            <div class="card-body">
+                <h5 class="text-center"><a href="{{prod.get_absolute_url}}" class="text-danger">{{prod.name}}</a></h5><br>
+                <h5 class="text-white text-center">{{prod.price}} din</h5>
+            
+                <p class="card-title text-danger text-center">Proizvod od <a class="card-title text-danger" href="{% url 'webshop:view_profile' prod.user.id %}">{{prod.user.first_name}} {{prod.user.last_name}}</a></p>
+                <p class="text-center">
+                    <a href="{% url 'webshop:cart_add' product_id=prod.id %}" class="btn btn-outline-danger">Dodaj u korpu</i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
